@@ -9,7 +9,7 @@ public class QuoteRequest {
     private int ssn;
     private int creditScore;
     private double loanAmount;
-    private int loanDurationMount;
+    private int loanDuration;
 
     public QuoteRequest() {
     }
@@ -18,8 +18,9 @@ public class QuoteRequest {
         this.ssn = ssn;
         this.creditScore = creditScore;
         this.loanAmount = loanAmount;
-        this.loanDurationMount = loanDurationMount;
+        this.loanDuration = loanDurationMount;
     }
+
 
     public int getSsn() {
         return ssn;
@@ -45,12 +46,12 @@ public class QuoteRequest {
         this.loanAmount = loanAmount;
     }
 
-    public int getLoanDurationMount() {
-        return loanDurationMount;
+    public int getLoanDuration() {
+        return loanDuration;
     }
 
-    public void setLoanDurationMount(int loanDurationMount) {
-        this.loanDurationMount = loanDurationMount;
+    public void setLoanDuration(int loanDuration) {
+        this.loanDuration = loanDuration;
     }
 
     @Override
@@ -59,7 +60,7 @@ public class QuoteRequest {
                 "ssn=" + ssn +
                 ", creditScore=" + creditScore +
                 ", loanAmount=" + loanAmount +
-                ", loanDurationMount=" + loanDurationMount +
+                ", loanDuration=" + loanDuration +
                 '}';
     }
 }

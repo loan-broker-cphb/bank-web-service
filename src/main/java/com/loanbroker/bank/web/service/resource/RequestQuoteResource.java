@@ -19,7 +19,11 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 import java.util.Random;
+
+import org.springframework.amqp.core.Queue;
+import org.springframework.scheduling.annotation.Scheduled;
 
 
 @RestController
@@ -28,40 +32,54 @@ import java.util.Random;
 @Consumes(MediaType.APPLICATION_JSON)
 public class RequestQuoteResource {
 
+    @Bean
+    public Queue hello() {
+        return new Queue("JsonBank");
+    }
+
     @Autowired
     private RabbitTemplate template;
 
-
+    @Autowired
+    private Queue queue;
     @PostMapping
     public QuoteResponse getQuote(@RequestBody QuoteRequest quoteRequest) {
-        // Do something with the quote here. Map it to a QuoteResponse object.
-       QuoteRequest q= quoteRequest;
-    int ssn = q.getSsn();
+        // Do s mething with the quote here. Map it to a QuoteResponse object.
+
+
+    int ssn = quoteRequest.getSsn();
     System.out.print("HER IS :  "+ssn +"\n");
-    int creditScore = q.getCreditScore();
-    double loanAmount = q.getLoanAmount();
-    int loanDurationMount = q.getLoanDurationMount();
+    int creditScore = quoteRequest.getCreditScore();
+    double loanAmount = quoteRequest.getLoanAmount();
+    int loanDurationMount = quoteRequest.getLoanDuration();
         System.out.print("HER ISss :  "+loanDurationMount);
     double interstRate ;
-    double x = (Math.random() * (10.0));
-    double y = (Math.random() * (50.0));
-    if (creditScore < 600 && loanAmount < 360) {
-        interstRate = 7.5;
-    } else if (creditScore >= 600 && loanAmount > 360) {
+
+    double x = (Math.random() * (4.0))+2;
+    double y = (Math.random() * (2.0));
+
+    if (creditScore < 500 && loanAmount < 360) {
+        interstRate = 2.5;
+    } else if (creditScore >= 500 && loanAmount < 360) {
         interstRate = x;
-    } else if (creditScore >= 600 && loanAmount < 360) {
+    } else if (creditScore >= 500 && loanAmount > 360) {
         interstRate = y;
     } else {
-        interstRate = 10.0;
+        interstRate = 3.5;
     }
+
+
         QuoteResponse quoteResponse = new QuoteResponse(interstRate,ssn);
         // Replace uri in the create call with uri from quoteRequest
         // This piece of code sets the factory of the template to the url specified from the request
-       ConnectionFactory factory = ConnectionFactoryBuilder.create("amqp://guest:guest@localhost:5672/");
-        /*template.setConnectionFactory(factory);
-        template.convertAndSend(quoteResponse);*/
+
+
+        ConnectionFactory factory = ConnectionFactoryBuilder.create("amqp://guest:guest@localhost:5672/");
+        template.setConnectionFactory(factory);
+        template.convertAndSend(quoteResponse);
         return quoteResponse;
     }
+
 
 
 
