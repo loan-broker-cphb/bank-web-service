@@ -1,14 +1,16 @@
 package com.loanbroker.bank.web.service.resource;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.jsonschema.JsonSerializableSchema;
-import com.loanbroker.bank.web.service.ConnectionFactoryBuilder;
+import com.loanbroker.bank.web.service.BankWebServiceApplication;
 import com.loanbroker.bank.web.service.model.QuoteRequest;
 import com.loanbroker.bank.web.service.model.QuoteResponse;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +20,7 @@ import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.List;
-import java.util.Random;
-import org.springframework.amqp.core.Queue;
-import org.springframework.scheduling.annotation.Scheduled;
+import java.util.Properties;
 
 
 @RestController
@@ -31,18 +29,17 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Consumes(MediaType.APPLICATION_JSON)
 public class RequestQuoteResource {
 
-    @Bean
-    public Queue hello() {
-        return new Queue("JsonBank");
-    }
-
     @Autowired
     private RabbitTemplate template;
 
     @Autowired
-    private Queue queue;
+    MessageConverter messageConverter;
+
+    @Autowired
+    RabbitAdmin rabbitAdmin;
+
     @PostMapping
-    public QuoteResponse getQuote(@RequestBody QuoteRequest quoteRequest) {
+    public QuoteResponse getQuote(@RequestBody @Valid QuoteRequest quoteRequest) {
         // Do s mething with the quote here. Map it to a QuoteResponse object.
 
     int ssn = quoteRequest.getSsn();
@@ -66,9 +63,18 @@ public class RequestQuoteResource {
         QuoteResponse quoteResponse = new QuoteResponse(interstRate,ssn);
         // Replace uri in the create call with uri from quoteRequest
         // This piece of code sets the factory of the template to the url specified from the request
-        ConnectionFactory factory = ConnectionFactoryBuilder.create("amqp://guest:guest@localhost:5672/");
-        template.setConnectionFactory(factory);
-        template.convertAndSend(queue.getActualName(),quoteResponse);
+        Properties prop = rabbitAdmin.getQueueProperties(quoteRequest.getReplyTo());
+        if (prop == null) {
+            Queue queue = new Queue(quoteRequest.getReplyTo(), true, false, true);
+            rabbitAdmin.declareQueue(queue);
+            Binding binding = new Binding(quoteRequest.getReplyTo(), Binding.DestinationType.QUEUE, BankWebServiceApplication.exchange, quoteRequest.getReplyTo(), null);
+            rabbitAdmin.declareBinding(binding);
+        }
+        MessageProperties properties = new MessageProperties();
+        properties.setContentType(MessageProperties.CONTENT_TYPE_JSON);
+        Message message = messageConverter.toMessage(quoteResponse, properties);
+        template.setQueue(quoteRequest.getReplyTo());
+        template.send(quoteRequest.getReplyTo(), message);
         return quoteResponse;
     }
 }
