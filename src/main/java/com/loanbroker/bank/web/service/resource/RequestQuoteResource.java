@@ -21,7 +21,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Random;
-
 import org.springframework.amqp.core.Queue;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -46,13 +45,10 @@ public class RequestQuoteResource {
     public QuoteResponse getQuote(@RequestBody QuoteRequest quoteRequest) {
         // Do s mething with the quote here. Map it to a QuoteResponse object.
 
-
     int ssn = quoteRequest.getSsn();
-    System.out.print("HER IS :  "+ssn +"\n");
     int creditScore = quoteRequest.getCreditScore();
     double loanAmount = quoteRequest.getLoanAmount();
     int loanDurationMount = quoteRequest.getLoanDuration();
-        System.out.print("HER ISss :  "+loanDurationMount);
     double interstRate ;
 
     double x = (Math.random() * (4.0))+2;
@@ -67,20 +63,12 @@ public class RequestQuoteResource {
     } else {
         interstRate = 3.5;
     }
-
-
         QuoteResponse quoteResponse = new QuoteResponse(interstRate,ssn);
         // Replace uri in the create call with uri from quoteRequest
         // This piece of code sets the factory of the template to the url specified from the request
-
-
         ConnectionFactory factory = ConnectionFactoryBuilder.create("amqp://guest:guest@localhost:5672/");
         template.setConnectionFactory(factory);
-        template.convertAndSend(quoteResponse);
+        template.convertAndSend(queue.getActualName(),quoteResponse);
         return quoteResponse;
     }
-
-
-
-
 }
