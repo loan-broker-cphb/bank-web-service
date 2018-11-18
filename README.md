@@ -19,4 +19,10 @@ Then there are some screenshots:
 
 ![image](https://user-images.githubusercontent.com/20173643/48667407-15d4c780-ead5-11e8-9ca1-1f7f33c4d7f6.png)
 
+![image](https://user-images.githubusercontent.com/20173643/48667423-664c2500-ead5-11e8-894b-9c7c2ab5c7ec.png)
 
+![image](https://user-images.githubusercontent.com/20173643/48667434-a6aba300-ead5-11e8-9d8e-f67054ac3b62.png)
+
+![image](https://user-images.githubusercontent.com/20173643/48667446-02762c00-ead6-11e8-8fbd-258203085f7b.png)
+
+![image](https://user-images.githubusercontent.com/20173643/48667455-597c0100-ead6-11e8-992f-2fa70a4011f0.png)
