@@ -12,9 +12,10 @@ To send request to the bank and to get the bank response to rabbit mq, we shall 
 
 # Screenshots
 Then there are some screenshots:
-- where in the project I have added port 8091
+- Change the port to 8091 in application propertiese because there were some problems on port 8080 
 - postman
-- RabbitMQ mangment Chanels and Exchanges
+- RabbitMQ mangment Channels and Exchanges
+(Respectively)
 
 
 ![image](https://user-images.githubusercontent.com/20173643/48667407-15d4c780-ead5-11e8-9ca1-1f7f33c4d7f6.png)
