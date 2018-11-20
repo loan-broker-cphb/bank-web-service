@@ -1,6 +1,12 @@
 # bank-web-service
 Bank web service
 
+# Calculate interesrate
+
+InterstRate | LOAN AMOUNT | CREDIT SCORE  | LoanDuration |ROUTING KEY |
+------|-------------|---------------|-------------|-------------| 
+1.1 | `< 500 ` | `< 10000 `  | `<= 365` | `G4_JSON` |
+
 To send request to the bank and to get the bank response to rabbit mq, we shall do:
 
 - Run program
