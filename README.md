@@ -1,7 +1,7 @@
 # bank-web-service
 Bank web service
 
-# Calculate interesrate
+# Calculatation of interest rate
 
 InterstRate | CREDIT SCORE | LOAN AMOUNT  | LoanDuration |ROUTING KEY |
 ------|-------------|---------------|-------------|-------------| 
