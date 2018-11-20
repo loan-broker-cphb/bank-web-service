@@ -3,10 +3,16 @@ Bank web service
 
 # Calculate interesrate
 
-InterstRate | LOAN AMOUNT | CREDIT SCORE  | LoanDuration |ROUTING KEY |
+InterstRate | CREDIT SCORE | LOAN AMOUNT  | LoanDuration |ROUTING KEY |
 ------|-------------|---------------|-------------|-------------| 
-1.1 | `< 500 ` | `< 10000 `  | `<= 365` | `G4_JSON` |
-
+ `1` | `< 500 ` | `<= 10000 `  | `<= 365*30` | `G4_JSON` |
+  `Math.random() * (2.0)` | `>= 500 ` | `<= 10000`  | `<=365*30` | `G4_JSON` |
+ `Math.random() * (2.0)+0.25` | `>= 500 && < 900 ` | `>= 10000 && <= 20000`  | `<=365*30 && <750*30 ` | `G4_JSON` |
+ `Math.random() * (2.0) +0.5` |`>= 500 && < 900 ` | `>= 20000 &&< 50000`  | `<=365*30 && <750*30` | `G4_JSON` |
+`Math.random() * (2.0) +1` |`>= 500 && < 900 ` | `>= 50000 &&< 100000`  | `<=750*30 && <1365*30` | `G4_JSON` |
+`Math.random() * (2.0) +1.25` |`>= 500 && < 900 ` | `>= 50000 &&< 100000`  | `>1365*30 && <2000*30` | `G4_JSON` |
+ `1` | `otherwise`|`otherwise` |`otherwise` |`G4_JSON` |
+ `0` | `otherwise`|`otherwise` |`otherwise` |`otherwise` |
 To send request to the bank and to get the bank response to rabbit mq, we shall do:
 
 - Run program
