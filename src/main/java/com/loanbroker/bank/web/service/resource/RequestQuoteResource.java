@@ -46,29 +46,33 @@ public class RequestQuoteResource {
     int creditScore = quoteRequest.getCreditScore();
     double loanAmount = quoteRequest.getLoanAmount();
     int loanDurationMount = quoteRequest.getLoanDuration()*30;
+    String replyTo = quoteRequest.getReplyTo();
     double interstRate ;
+        QuoteResponse quoteResponse;
 
 
     double y = (Math.random() * (2.0));
-
-    if (creditScore < 500 && loanAmount < 10000&& loanDurationMount<=365) {
-        interstRate = 2.5;
-    } else if (creditScore < 500 && loanAmount <= 10000 && loanDurationMount<=365) {
+if (replyTo.equals("G4_JSON")) {
+    if (creditScore < 500 && loanAmount <= 10000&& loanDurationMount<=365*30) {
         interstRate = 1;
-    } else if (creditScore >= 500 && loanAmount <= 10000 && loanDurationMount<=365) {
+    }  else if (creditScore >= 500 && loanAmount <= 10000 && loanDurationMount<=365*30) {
         interstRate = y;
-    }else if (creditScore >= 500 && loanAmount > 10000 && loanAmount < 20000 && loanDurationMount<=365 ) {
+    }else if (creditScore >= 500 && creditScore < 900 && loanAmount >= 10000 && loanAmount < 20000 && loanDurationMount>365*30 && loanDurationMount<750*30) {
         interstRate = y+0.25;
-    } else if (creditScore >= 500 && creditScore < 600 && loanAmount > 10000 && loanAmount < 20000|| (loanDurationMount>365 && loanDurationMount<750)) {
+    } else if (creditScore >= 500 && creditScore < 900 && loanAmount >= 20000 && loanAmount < 50000|| (loanDurationMount>365*30 && loanDurationMount<750*30)) {
         interstRate = y+0.5;
-    } else if (creditScore >= 700 && creditScore < 900 && loanAmount > 20000 && loanAmount < 50000&& loanDurationMount>750 && loanDurationMount<1000 ) {
+    } else if (creditScore >= 500 && creditScore < 900 && loanAmount >= 50000 && loanAmount < 100000&& loanDurationMount>750*30 && loanDurationMount<1365*30 ) {
         interstRate = y+1;
-    }else if (creditScore >= 700 && creditScore < 900 && loanAmount > 50000 && loanAmount < 70000&& loanDurationMount>1000 && loanDurationMount<1365) {
+    }else if (creditScore >= 500 && creditScore < 900 && loanAmount >= 50000 && loanAmount < 100000 && loanDurationMount>1365*30 && loanDurationMount<2000*30) {
         interstRate = y+1.25;
     } else {
-        interstRate = 4.05;
+        interstRate = 3.05;
     }
-        QuoteResponse quoteResponse = new QuoteResponse(interstRate,ssn);
+
+     quoteResponse = new QuoteResponse(interstRate,ssn);
+} else{ quoteResponse = new QuoteResponse(0,ssn); }
+
+
         // Replace uri in the create call with uri from quoteRequest
         // This piece of code sets the factory of the template to the url specified from the request
         Properties prop = rabbitAdmin.getQueueProperties(quoteRequest.getReplyTo());
