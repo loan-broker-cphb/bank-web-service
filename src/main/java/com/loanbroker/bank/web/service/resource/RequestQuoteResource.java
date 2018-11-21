@@ -52,7 +52,6 @@ public class RequestQuoteResource {
 
 
     double y = (Math.random() * (2.0));
-if (replyTo.equals("G4_JSON")) {
     if (creditScore < 500 && loanAmount <= 10000&& loanDurationMount<=365*30) {
         interstRate = 1;
     }  else if (creditScore >= 500 && loanAmount <= 10000 && loanDurationMount<=365*30) {
@@ -70,7 +69,6 @@ if (replyTo.equals("G4_JSON")) {
     }
 
      quoteResponse = new QuoteResponse(interstRate,ssn);
-} else{ quoteResponse = new QuoteResponse(0,ssn); }
 
 
         // Replace uri in the create call with uri from quoteRequest
