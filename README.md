@@ -12,7 +12,7 @@ InterstRate | CREDIT SCORE | LOAN AMOUNT  | LoanDuration |ROUTING KEY |
 `Math.random() * (2.0) +1` |`>= 500 && < 900 ` | `>= 50000 &&< 100000`  | `<=750*30 && <1365*30` | `G4_JSON` |
 `Math.random() * (2.0) +1.25` |`>= 500 && < 900 ` | `>= 50000 &&< 100000`  | `>1365*30 && <2000*30` | `G4_JSON` |
  `1` | `otherwise`| `otherwise`| `otherwise` |`G4_JSON` |
- `0` | `otherwise` | `otherwise`| `otherwise`| `otherwise`|
+ `-1` | `otherwise` | `otherwise`| `otherwise`| `otherwise`|
  
 To send request to the bank and to get the bank response to rabbit mq, we shall do:
 
@@ -25,13 +25,10 @@ To send request to the bank and to get the bank response to rabbit mq, we shall 
 
 # Screenshots
 Then there are some screenshots:
-- Change the port to 8091 in application propertiese because there were some problems on port 8080 
 - postman
 - RabbitMQ mangment Channels and Exchanges
 (Respectively)
 
-
-![image](https://user-images.githubusercontent.com/20173643/48667407-15d4c780-ead5-11e8-9ca1-1f7f33c4d7f6.png)
 
 ![image](https://user-images.githubusercontent.com/20173643/48667423-664c2500-ead5-11e8-894b-9c7c2ab5c7ec.png)
 
